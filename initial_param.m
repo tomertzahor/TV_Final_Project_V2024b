@@ -7,7 +7,7 @@
 %           parameters. Run this script ONCE before
 %           opening main_program.slx.
 %% =========================================================
-
+%check connection with GIT
 clear; clc;
 
 %% --- Vehicle Parameters ---
