@@ -38,6 +38,7 @@ Motor.RPM_axis = [0, 2006, 4013, 6019, 8008, 9960, 12003, 14027, 15998, 17986, 1
 Motor.Torque_axis = [13.8, 12.6, 11.9, 11.5, 10.8, 10.2, 9.8, 9.2, 8.9, 8.3, 0.2]; % [Nm]
 Motor.RPM_axis_blue = [0, 2006, 7990, 12979, 14009, 16016, 17661, 18023, 18999];
 Motor.Torque_axis_blue = [21.2, 21.2, 21.2, 21.2, 19.7, 15.5, 10, 8.5, 0.3];
+Motor.Lag_tau = 0.03;
 
 %% --- Physical Constants ---
 Phys.g              = 9.81;                       % [m/s^2]   Gravitational acceleration
