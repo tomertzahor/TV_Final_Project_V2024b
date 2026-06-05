@@ -11,22 +11,37 @@
 clear; clc;
 
 %% --- Vehicle Parameters ---
-Vehicle.Mass        = 240;                        % [kg]      Total mass (without driver)
-Vehicle.L           = 1.54;                       % [m]       Wheelbase (front axle to rear axle)
-Vehicle.TrackWidth  = 1.2;                        % [m]       *** Need to be filled ***
-Vehicle.a           = 0.68;                       % [m]       Distance from C.G to front axle
+Vehicle.Mass        = 308;                        % [kg]      Total mass (without driver)
+Vehicle.L           = 1.590;                      % [m]       Wheelbase (front axle to rear axle)
+Vehicle.TrackWidth  = 1.25;                       % [m]       *** Need to be filled ***
+Vehicle.a           = 0.812;                      % [m]       Distance from C.G to front axle
 Vehicle.b           = Vehicle.L - Vehicle.a;      % [m]       Distance from C.G to rear axle
-Vehicle.Rw          = 0.23876;                      % [m]       Wheel radius
+Vehicle.h           = 0.284;                      % [m]       Distance from C.G to rear axle
+% Vehicle.Rw        = 0.23876;                    % [m]       Wheel radius
+Vehicle.Rw          = 0.2550;                    % [m]       Model Wheel radius
 Vehicle.Rw_eff      = Vehicle.Rw*0.98;            % effective wheel radius [m]
-Vehicle.Iz          = 245.9;                      % [kg*m^2]  Yaw moment of inertia
+Vehicle.Iz          = 174.144;                    % [kg*m^2]  Yaw moment of inertia
 
 %% --- Sensors Parameters ---
 Speed.tau_gps       = 0.3;
 Speed.tau_RPM       = 0.05;
 Speed.alpha         =0.95;
 %% --- Tire Parameters (Cornering Stiffness) ---
-Vehicle.Ca_front_wheel = 10000;                   % [N/rad]   Cornering stiffness per single front wheel
-Vehicle.Ca_rear_wheel  = 9000;                    % [N/rad]   Cornering stiffness per single rear wheel
+% Vehicle.Ca_front_wheel = 10000;                   % [N/rad]   Cornering stiffness per single front wheel
+% Vehicle.Ca_rear_wheel  = 9000;                    % [N/rad]   Cornering stiffness per single rear wheel
+PKY1 = 57.85;
+PKY2 = 1.785;
+Fz0  = 800;   % N -- FNOMIN from CarMaker
+
+% Static wheel loads (no driver)
+Fz_front = Vehicle.Mass * 9.81 * Vehicle.b / (Vehicle.L * 2);  % ≈ 739 N
+Fz_rear  = Vehicle.Mass * 9.81 * Vehicle.a / (Vehicle.L * 2);  % ≈ 771 N
+
+Vehicle.Ca_front_wheel = PKY1 * Fz0 * sin(2 * atan(Fz_front / (PKY2 * Fz0)));
+Vehicle.Ca_rear_wheel  = PKY1 * Fz0 * sin(2 * atan(Fz_rear  / (PKY2 * Fz0)));
+
+fprintf('Ca_front = %.1f N/rad\n', Vehicle.Ca_front_wheel);
+fprintf('Ca_rear  = %.1f N/rad\n', Vehicle.Ca_rear_wheel);                   % [N/rad]   Model Cornering stiffness per single rear wheel
 Vehicle.Cf          = 2 * Vehicle.Ca_front_wheel; % [N/rad]   Front axle total cornering stiffness
 Vehicle.Cr          = 2 * Vehicle.Ca_rear_wheel;  % [N/rad]   Rear axle total cornering stiffness
 
@@ -99,7 +114,7 @@ for i = 1:n
     
     % Tune PI controller for the RAD/SEC plant
     opts = pidtuneOptions('PhaseMargin', 60);
-    C_pi = pidtune(G_plant, 'PI', 40, opts);
+    C_pi = pidtune(G_plant, 'PI', 12, opts);
     
     Control.Kp_table(i) = C_pi.Kp;
     Control.Ki_table(i) = C_pi.Ki;
@@ -118,4 +133,3 @@ Alloc.RearBias      = 1 - Alloc.FrontBias;        % [-]       Fraction of Mz app
 % and saves GainSchedule struct to workspace for Simulink
 %
 %  run('State_system.m');
-% fprintf('\ninitial_param.m complete. Workspace ready for Simulink.\n');
