@@ -6,8 +6,8 @@ four-wheel-drive electric race car, developed in **MATLAB/Simulink R2024b** and 
 co-simulation with **IPG CarMaker 14.1.1**.
 
 Each of the four in-wheel motors is controlled independently to generate a **direct yaw moment**
-that corrects the car's cornering balance - more agile in tight corners, more stable at the
-limit - without changing the driver's steering input.
+that corrects the car's cornering balance — more agile in tight corners, more stable at the
+limit — without changing the driver's steering input.
 
 ---
 
@@ -33,7 +33,7 @@ TV_Final_Project_V2024b/
     ├── Nero_4EM.car        # Vehicle dataset (4 in-wheel motors, 11:1 driveline, aggressive driver)
     ├── FSUK_Sprint_2026.rd5 # Road / track
     └── TV_Testing_Skidpad  # Skid Pad TestRun (vehicle + road + maneuver + driver)
-```
+
 ---
 
 ## Requirements
@@ -74,8 +74,7 @@ TV_Final_Project_V2024b/
 | Mean lateral acceleration [m/s²] | 7.23 | 7.76 | +7.5 % |
 | RMS yaw-rate deviation [rad/s] | 0.0195 | 0.0058 | −70 % |
 
-Open limitations / next steps: ±1000 Nm actuator saturation and the absence of an anti-windup loop;
-a back-calculation anti-windup scheme and a re-validated velocity-scheduled gain set are planned.
+Open limitations / next steps: ±1000 Nm actuator saturation; widening the actuator authority, upgrading the clamping anti-windup to a back-calculation scheme, and a re-validated gain set are planned.
 
 ---
 
@@ -83,3 +82,6 @@ a back-calculation anti-windup scheme and a re-validated velocity-scheduled gain
 - **Itai Groisman** · **Tomer Tzahor**
 - Advisor: **Guy Zaidner**, Mechanical Engineering Department, Ben-Gurion University of the Negev
 - Project **26-37**, BGRacing Formula Student.
+
+## License
+Released under the MIT License — see `LICENSE`.
